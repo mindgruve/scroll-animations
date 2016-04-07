@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Scroll Animations Demo</title>
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.0/imagesloaded.pkgd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.0/jquery.waypoints.min.js"></script>
+    <script>
+        $( function() {
+
+            var $els = $('[data-animation]:not([data-animation-child]), [data-animation-container]');
+
+            var containers = $els.filter('[data-animation-container]');
+            var items = $els.not(containers);
+
+            var images = new imagesLoaded('body', function() {
+
+                //set single items
+                animate(items);
+
+                // setup animation sets
+                containers.each(function() {
+                    animate($(this));
+                });
+
+            });
+
+            function animate( items ) {
+                items.each(function() {
+                    var $this = $(this),
+                            $children = $(this).find('[data-animation-child]');
+
+                    if ($children.length > 0) {
+
+                        // setup children
+                        $children.each(function() {
+                            var $child = $(this);
+                            var $delay = $child.attr('data-animation-delay');
+
+                            $child.css({
+                                '-webkit-animation-delay':  $delay,
+                                '-moz-animation-delay':     $delay,
+                                '-ms-animation-delay':      $delay,
+                                '-o-animation-delay':       $delay,
+                                'animation-delay':          $delay
+                            });
+                        });
+
+                    } else {
+
+                        var $delay = $(this).attr('data-animation-delay');
+
+                        // setup single item
+                        $this.css({
+                            '-webkit-animation-delay':  $delay,
+                            '-moz-animation-delay':     $delay,
+                            '-ms-animation-delay':      $delay,
+                            '-o-animation-delay':       $delay,
+                            'animation-delay':          $delay
+                        });
+
+                    }
+
+                    // create waypoint
+                    var waypoint = new Waypoint({
+                        element: $this,
+                        offset: '80%',
+                        handler: function(direction) {
+                            if (direction == 'down') {
+
+                                if ($children.length > 0) {
+
+                                    // animate the children
+                                    $children.each(function() {
+                                        $(this).addClass('animated').addClass( $(this).attr('data-animation') )
+                                    });
+
+                                } else {
+
+                                    // animate the single item
+                                    $this.addClass('animated').addClass( $this.attr('data-animation') );
+
+                                }
+
+                            } // endif direction == down
+                        }
+                    });
+                })
+            }
+        });
+    </script>
+
+    <style type="text/css">
+        html,
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+        body {
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        [data-animation] {
+            opacity: 0;
+        }
+
+        [data-animation].animated {
+            opacity: 1;
+        }
+
+        #hero {
+            background: radial-gradient(circle at 50% center, #dee294 0%, #b7bd32 70%);
+            height: 100vh;
+            text-align: center;
+        }
+
+        #hero h1 small {
+            font-size: 50%;
+        }
+
+        .table-wrap {
+            display: table;
+            height: 100%;
+            width: 100%;
+        }
+
+        .table-cell {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        #lower {
+            background: radial-gradient(circle at 50% center, #f0c916 0%, #ccad1a 70%);
+            overflow: hidden;
+            text-align: center;
+            min-height: 600px;
+            padding: 150px 0;
+        }
+
+        #lower img {
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+
+<section id="hero">
+
+    <div class="table-wrap">
+        <div class="table-cell">
+            <h1 class="heading" data-animation="fadeInUp">
+                Heading 1 <br>
+                <small>(hint: scroll down)</small>
+            </h1>
+        </div>
+    </div>
+
+</section>
+
+<section id="lower" data-animation-container>
+
+    <h1 data-animation="fadeIn" data-animation-child>
+        An animation set!
+    </h1>
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-sm-4" data-animation-child data-animation="fadeInUp" data-animation-delay="500ms">
+                <img src="http://placebee.co.uk/400x400/3" alt="" class="img-responsive">
+            </div>
+            <div class="col-sm-4" data-animation-child data-animation="fadeInUp" data-animation-delay="1500ms">
+                <img src="http://placebee.co.uk/400x400/2" alt="" class="img-responsive">
+            </div>
+            <div class="col-sm-4" data-animation-child data-animation="fadeInUp" data-animation-delay="2500ms">
+                <img src="http://placebee.co.uk/400x400/1" alt="" class="img-responsive">
+            </div>
+
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container -->
+
+</section>
+</body>
+</html>
