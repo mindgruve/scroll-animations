@@ -30,13 +30,13 @@ Requires the scroll-animations.js be included in the javascript/initr directiory
 
 Required CSS
 ```css
-    [data-animation] {
-        opacity: 0;
-    }
+[data-animation] {
+    opacity: 0;
+}
 
-    [data-animation].animated {
-        opacity: 1;
-    }
+[data-animation].animated {
+    opacity: 1;
+}
 ```
 
 ## Documentation
